@@ -1,0 +1,25 @@
+type AuctionItem = record {
+    id: text;
+    title: text;
+    description: text;
+    minBid: nat64;
+    endTime: nat64;
+};
+
+type Bid = record {
+    bidder: text;
+    amount: nat64;
+};
+
+type Auction = record {
+    item: AuctionItem;
+    bids: vec<Bid>;
+    highestBid: opt<Bid>;
+};
+
+service : {
+    listItem: (text, text, nat64, text) -> (variant { ok: Auction; err: text });
+    placeBid: (text, Bid) -> (variant { ok: Auction; err: text });
+    getAuctions: () -> (variant { ok: vec<Auction>; err: text });
+    getWinner: (text) -> (variant { ok: opt<Bid>; err: text });
+}
